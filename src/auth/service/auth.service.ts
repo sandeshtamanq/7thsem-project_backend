@@ -2,7 +2,7 @@ import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/entity/user.entity';
-import { SignUpInterface } from '../models/interface/signup.interface';
+import { UserInterface } from '../models/interface/user.interface';
 import { LoginService } from './login.service';
 import { LoginDto } from '../models/dto/login.dto';
 
@@ -32,7 +32,7 @@ export class AuthService {
   /*
     User Sign Up
   */
-  async signUp(signUpDto: SignUpInterface) {
+  async signUp(signUpDto: UserInterface) {
     const hashedPassword = await this.loginService.hashPassword(
       signUpDto.password,
     );

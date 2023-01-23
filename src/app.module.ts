@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { AuthModule } from './auth/auth.module';
-import { typeOrmConfigAsync } from './typeorm/typeorm.config';
 
 @Module({
   imports: [
@@ -18,6 +17,7 @@ import { typeOrmConfigAsync } from './typeorm/typeorm.config';
           password: process.env.DB_PASSWORD,
           database: process.env.DB_NAME,
           entities: [__dirname + './**/models/entity/*.entity{.ts,.js}'],
+          // url: process.env.DATABASE_URL,
           autoLoadEntities: true,
           synchronize: true,
         };

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/entity/user.entity';
-import { SignUpInterface } from '../models/interface/signup.interface';
+import { UserInterface } from '../models/interface/user.interface';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class LoginService {
@@ -16,10 +16,11 @@ export class LoginService {
     return bcrypt.hash(password, 12);
   }
 
-  async verifyUser(email: string, password: string): Promise<SignUpInterface> {
-    const user: SignUpInterface = await this.userRepository.findOne({
+  async verifyUser(email: string, password: string): Promise<UserInterface> {
+    const user: UserInterface = await this.userRepository.findOne({
       where: { email },
       select: [
+        'id',
         'email',
         'password',
         'lastName',
@@ -43,7 +44,7 @@ export class LoginService {
     return bcrypt.compare(password, hashedPassword);
   }
 
-  async generateJwt(payload: SignUpInterface): Promise<string> {
-    return this.jwtService.sign({ payload });
+  async generateJwt(user: UserInterface): Promise<string> {
+    return this.jwtService.sign({ user });
   }
 }
