@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', { exclude: ['/'] });
   const config = new DocumentBuilder()
     .setTitle('Ecommerce')
     .setDescription('7th Semester Project api documentation')
