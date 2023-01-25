@@ -5,12 +5,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    allowedHeaders: ['content-type', 'Access-Control-Allow-Origin'],
-    origin: 'http://localhost:3000',
-    methods: ['POST', 'PUT', 'DELETE', 'GET'],
-    credentials: true,
-  });
   app.setGlobalPrefix('api', { exclude: ['/'] });
   const config = new DocumentBuilder()
     .setTitle('Ecommerce')
@@ -21,6 +15,13 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('ecommerce/documentation', app, document);
+  // app.enableCors({
+  //   allowedHeaders: ['content-type', 'Access-Control-Allow-Origin'],
+  //   origin: true,
+  //   methods: ['POST', 'PUT', 'DELETE', 'GET'],
+  //   credentials: true,
+  // });
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
