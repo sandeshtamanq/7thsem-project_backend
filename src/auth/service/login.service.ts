@@ -27,6 +27,7 @@ export class LoginService {
         'firstName',
         'address',
         'contactNumber',
+        'role',
       ],
     });
 

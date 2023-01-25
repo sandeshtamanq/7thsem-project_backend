@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { ProductEntity } from 'src/product/models/entity/product.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  Unique,
+} from 'typeorm';
 import { UserRoles } from '../interface/user.roles';
 
 @Entity({ name: 'users' })
@@ -27,4 +35,10 @@ export class UserEntity {
 
   @Column({ nullable: true })
   address: string;
+
+  // @Column({ type: Timestamp, default: 'CURRENT_TIMESTAMP' })
+  // createdAt: Date;
+
+  @OneToMany((type) => ProductEntity, (product) => product.addedBy)
+  products: ProductEntity[];
 }

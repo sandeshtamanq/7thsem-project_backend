@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { AuthModule } from './auth/auth.module';
+import { UserEntity } from './auth/models/entity/user.entity';
+import { ProductEntity } from './product/models/entity/product.entity';
+import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -11,18 +15,21 @@ import { AuthModule } from './auth/auth.module';
       useFactory: () => {
         return {
           type: 'postgres',
-          host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT),
-          username: process.env.DB_USER,
-          password: process.env.DB_PASSWORD,
-          database: process.env.DB_NAME,
-          entities: [__dirname + './**/models/entity/*.entity{.ts,.js}'],
-          // url: process.env.DATABASE_URL,
+          // host: process.env.DB_HOST || 'localhost',
+          // port: parseInt(process.env.DB_PORT),
+          // username: process.env.DB_USER,
+          // password: process.env.DB_PASSWORD,
+          // database: process.env.DB_NAME,
+          // entities: [__dirname + './**/models/entity/*.entity{.ts,.js}'],
+          entities: [UserEntity, ProductEntity],
+          url: process.env.DATABASE_URL,
           autoLoadEntities: true,
           synchronize: true,
         };
       },
     }),
+    ProductModule,
+    UserModule,
   ],
 })
 export class AppModule {}
