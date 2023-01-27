@@ -4,18 +4,19 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     environment:
-      DATABASE_URL: postgres://user:password@postgres:5432/db
+      # DATABASE_URL: postgres://user:password@postgres:5432/db
+      DATABASE_URL: postgres://jojpsbov:4gy4NRnMKhnr82skFEtlmMMISlbOeJRk@floppy.db.elephantsql.com/jojpsbov
       PORT: 3000
     ports:
       - '3000:3000'
-  postgres:
-    image: postgres:10.4
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+  # postgres:
+  #   image: postgres:10.4
+  #   ports:
+  #     - '5432:5432'
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: db
