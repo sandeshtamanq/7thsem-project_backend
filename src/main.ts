@@ -15,15 +15,15 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('ecommerce/documentation', app, document);
-  // app.enableCors({
-  //   allowedHeaders: ['content-type', 'Access-Control-Allow-Origin'],
-  //   origin: true,
-  //   methods: ['POST', 'PUT', 'DELETE', 'GET'],
-  //   credentials: true,
-  // });
   app.enableCors({
+    allowedHeaders: ['content-type', 'Access-Control-Allow-Origin'],
     origin: /https?:\/\/(([^/]+\.)?example\.com)$/i,
+    methods: ['POST', 'PUT', 'DELETE', 'GET'],
+    credentials: true,
   });
+  // app.enableCors({
+  //   origin: /https?:\/\/(([^/]+\.)?example\.com)$/i,
+  // });
   await app.listen(3000);
 }
 bootstrap();
