@@ -14,7 +14,14 @@ export class UserController {
   @Get()
   @hasRoles(UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  getAllUsers(): Promise<UserEntity[]> {
+  getAllUsers(): Promise<[UserEntity[], number]> {
     return this.userService.getAllUsers();
+  }
+
+  @Get('/status')
+  // @hasRoles(UserRoles.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  getUserStat() {
+    return this.userService.getUserStat();
   }
 }

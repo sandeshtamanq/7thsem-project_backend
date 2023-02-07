@@ -7,6 +7,8 @@ import { UserEntity } from './auth/models/entity/user.entity';
 import { ProductEntity } from './product/models/entity/product.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+import { CategoryModule } from './category/category.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -16,14 +18,14 @@ import { UserModule } from './user/user.module';
       useFactory: () => {
         return {
           type: 'postgres',
-          // host: process.env.DB_HOST || 'localhost',
-          // port: parseInt(process.env.DB_PORT),
-          // username: process.env.DB_USER,
-          // password: process.env.DB_PASSWORD,
-          // database: process.env.DB_NAME,
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT),
+          username: process.env.DB_USER,
+          password: process.env.DB_PASSWORD,
+          database: process.env.DB_NAME,
           // entities: [__dirname + './**/models/entity/*.entity{.ts,.js}'],
           entities: [UserEntity, ProductEntity],
-          url: process.env.DATABASE_URL,
+          // url: process.env.DATABASE_URL,
           autoLoadEntities: true,
           synchronize: true,
         };
@@ -31,6 +33,8 @@ import { UserModule } from './user/user.module';
     }),
     ProductModule,
     UserModule,
+    CategoryModule,
+    BrandModule,
   ],
   controllers: [AppController],
 })

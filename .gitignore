@@ -5,6 +5,8 @@
 .env
 Dockerfile
 
+/uploads
+/uploads/product-images
 # Logs
 logs
 *.log

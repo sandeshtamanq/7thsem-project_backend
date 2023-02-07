@@ -4,7 +4,6 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  Timestamp,
   Unique,
 } from 'typeorm';
 import { UserRoles } from '../interface/user.roles';
@@ -36,8 +35,8 @@ export class UserEntity {
   @Column({ nullable: true })
   address: string;
 
-  // @Column({ type: Timestamp, default: 'CURRENT_TIMESTAMP' })
-  // createdAt: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @OneToMany((type) => ProductEntity, (product) => product.addedBy)
   products: ProductEntity[];
