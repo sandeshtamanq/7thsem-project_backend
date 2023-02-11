@@ -5,6 +5,7 @@ import { UserEntity } from 'src/auth/models/entity/user.entity';
 import { BrandEntity } from 'src/brand/models/entity/brand.entity';
 import { ProductController } from './controller/product.controller';
 import { ProductEntity } from './models/entity/product.entity';
+import { FirebaseService } from './service/firebase.service';
 import { ProductService } from './service/product.service';
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { ProductService } from './service/product.service';
     AuthModule,
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, FirebaseService],
 })
 export class ProductModule {}
