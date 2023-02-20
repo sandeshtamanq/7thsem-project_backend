@@ -3,7 +3,7 @@ import { ProductInterface } from 'src/product/models/interface/product.interface
 
 export interface CartInterface {
   id?: number;
-  product?: ProductInterface;
-  amount?: number;
+  products?: ProductInterface[];
   user?: UserInterface;
+  userId?: number;
 }

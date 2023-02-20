@@ -16,13 +16,13 @@ export class CartEntity {
   id: number;
 
   @Column()
-  amount: number;
+  userId: number;
 
   @OneToOne((type) => UserEntity)
   @JoinColumn()
   user: UserEntity;
 
-  @ManyToMany((type) => ProductEntity, (product) => product.cart)
+  @ManyToMany((type) => ProductEntity, (product) => product.carts)
   @JoinTable()
   products: ProductEntity[];
 }

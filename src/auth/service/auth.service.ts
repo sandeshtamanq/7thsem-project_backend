@@ -28,8 +28,6 @@ export class AuthService {
     );
     const { password, ...payload } = user;
     const accessToken = await this.loginService.generateJwt(payload);
-    const newCart = this.cartRepository.create({ amount: 0, user: payload });
-    await this.cartRepository.save(newCart);
     return { accessToken };
   }
   /* User Login */

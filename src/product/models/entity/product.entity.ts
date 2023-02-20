@@ -50,5 +50,5 @@ export class ProductEntity {
   brandName: BrandEntity;
 
   @ManyToMany((type) => CartEntity, (cart) => cart.products)
-  cart: CartEntity[];
+  carts: CartEntity[];
 }
