@@ -1,8 +1,10 @@
+import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import { ProductEntity } from 'src/product/models/entity/product.entity';
 import {
   Column,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -37,6 +39,9 @@ export class UserEntity {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @OneToOne((type) => CartEntity)
+  cart: CartEntity;
 
   @OneToMany((type) => ProductEntity, (product) => product.addedBy)
   products: ProductEntity[];

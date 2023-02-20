@@ -9,11 +9,13 @@ import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { BrandModule } from './brand/brand.module';
+import { OrderModule } from './order/order.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
     AuthModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }), //To use the evnironment variables
     TypeOrmModule.forRootAsync({
       useFactory: () => {
         return {
@@ -35,6 +37,8 @@ import { BrandModule } from './brand/brand.module';
     UserModule,
     CategoryModule,
     BrandModule,
+    OrderModule,
+    CartModule,
   ],
   controllers: [AppController],
 })

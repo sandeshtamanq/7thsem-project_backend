@@ -5,6 +5,7 @@ import { UserEntity } from '../models/entity/user.entity';
 import { UserInterface } from '../models/interface/user.interface';
 import { LoginService } from './login.service';
 import { LoginDto } from '../models/dto/login.dto';
+import { CartEntity } from 'src/cart/models/entity/cart.entity';
 
 @Injectable()
 export class AuthService {
@@ -12,19 +13,23 @@ export class AuthService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @Inject(LoginService) private loginService: LoginService,
+    @InjectRepository(CartEntity)
+    private cartRepository: Repository<CartEntity>,
   ) {}
 
   /* 
     User Login 
   */
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const user = await this.loginService.verifyUser(
       loginDto.email,
       loginDto.password,
     );
     const { password, ...payload } = user;
     const accessToken = await this.loginService.generateJwt(payload);
+    const newCart = this.cartRepository.create({ amount: 0, user: payload });
+    await this.cartRepository.save(newCart);
     return { accessToken };
   }
   /* User Login */
@@ -32,7 +37,7 @@ export class AuthService {
   /*
     User Sign Up
   */
-  async signUp(signUpDto: UserInterface) {
+  async signUp(signUpDto: UserInterface): Promise<UserInterface> {
     const hashedPassword = await this.loginService.hashPassword(
       signUpDto.password,
     );
