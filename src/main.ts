@@ -7,7 +7,6 @@ import {
   initializeFirebaseApp,
 } from './firebase/firebase.config';
 
-// Initializes the firebase
 initializeFirebaseApp(firebaseConfig);
 
 async function bootstrap() {

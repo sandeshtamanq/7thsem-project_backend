@@ -1,11 +1,9 @@
 import { UserEntity } from 'src/auth/models/entity/user.entity';
 import { BrandEntity } from 'src/brand/models/entity/brand.entity';
-import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import {
   BeforeUpdate,
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -48,7 +46,10 @@ export class ProductEntity {
     onDelete: 'CASCADE',
   })
   brandName: BrandEntity;
+<<<<<<< HEAD
 
   @ManyToMany((type) => CartEntity, (cart) => cart.products)
   carts: CartEntity[];
+=======
+>>>>>>> parent of ad307e2... cart module added with GET and POST requests
 }

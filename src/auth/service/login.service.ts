@@ -10,7 +10,6 @@ export class LoginService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-
     private jwtService: JwtService,
   ) {}
   hashPassword(password: string): Promise<string> {
