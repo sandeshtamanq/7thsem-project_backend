@@ -30,7 +30,7 @@ export class UserEntity {
   password: string;
 
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
-  role: string;
+  role: UserRoles;
 
   @Column({ nullable: true })
   address: string;

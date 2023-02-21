@@ -1,5 +1,4 @@
-import { CartInterface } from 'src/cart/models/interface/cart.interface';
-import { ProductInterface } from 'src/product/models/interface/product.interface';
+import { ProductEntity } from 'src/product/models/entity/product.entity';
 import { UserRoles } from './user.roles';
 
 export interface UserInterface {
@@ -12,6 +11,5 @@ export interface UserInterface {
   address?: string;
   role?: UserRoles;
   createdAt?: Date;
-  cart?: CartInterface;
-  products?: ProductInterface;
+  products?: ProductEntity[];
 }

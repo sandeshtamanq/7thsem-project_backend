@@ -4,6 +4,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -46,10 +47,4 @@ export class ProductEntity {
     onDelete: 'CASCADE',
   })
   brandName: BrandEntity;
-<<<<<<< HEAD
-
-  @ManyToMany((type) => CartEntity, (cart) => cart.products)
-  carts: CartEntity[];
-=======
->>>>>>> parent of ad307e2... cart module added with GET and POST requests
 }
