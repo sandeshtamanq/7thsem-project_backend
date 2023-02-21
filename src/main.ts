@@ -2,6 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
+import {
+  firebaseConfig,
+  initializeFirebaseApp,
+} from './firebase/firebase.config';
+
+initializeFirebaseApp(firebaseConfig);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

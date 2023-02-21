@@ -1,8 +1,10 @@
+import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import { ProductEntity } from 'src/product/models/entity/product.entity';
 import {
   Column,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -30,7 +32,7 @@ export class UserEntity {
   password: string;
 
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
-  role: string;
+  role: UserRoles;
 
   @Column({ nullable: true })
   address: string;
@@ -40,4 +42,7 @@ export class UserEntity {
 
   @OneToMany((type) => ProductEntity, (product) => product.addedBy)
   products: ProductEntity[];
+
+  @OneToOne(() => CartEntity, (cart) => cart.user)
+  cart: CartEntity;
 }

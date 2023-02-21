@@ -28,10 +28,14 @@ import { diskStorage } from 'multer';
 const path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { CategoryValidationPipes } from '../pipes/category-validation.pipe';
+import { FirebaseService } from '../service/firebase.service';
 
 @Controller('product')
 export class ProductController {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private firebaseService: FirebaseService,
+  ) {}
   @Get()
   getAllProducts(): Promise<ProductEntity[]> {
     return this.productService.getAllProducts();
@@ -39,28 +43,35 @@ export class ProductController {
 
   @Post()
   @UseInterceptors(
-    FileInterceptor('productImage', {
-      storage: diskStorage({
-        destination: './uploads/product-images',
-        filename: (req, file, cb) => {
-          const filename: string =
-            path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-          const extension: string = path.parse(file.originalname).ext;
+    FileInterceptor(
+      'productImage',
+      // , {
+      //   storage: diskStorage({
+      //     destination: './uploads/product-images',
+      //     filename: (req, file, cb) => {
+      //       const filename: string =
+      //         path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      //       const extension: string = path.parse(file.originalname).ext;
 
-          cb(null, `${filename}${extension}`);
-        },
-      }),
-    }),
+      //       cb(null, `${filename}${extension}`);
+      //     },
+      //   }),
+      // }
+    ),
   )
   @UsePipes(ValidationPipe)
   @hasRoles(UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  addProducts(
-    @UploadedFile() file,
+  async addProducts(
+    @UploadedFile() file: Express.Multer.File,
     @GetUser() user: UserInterface,
     @Body(CategoryValidationPipes) productDto: ProductDto,
   ): Promise<ProductEntity> {
-    productDto.productImage = file.filename;
+    const imageUrl = await this.firebaseService.uploadFile(
+      file,
+      'product-images',
+    );
+    productDto.productImage = imageUrl;
     return this.productService.addProduct(user, productDto);
   }
 
