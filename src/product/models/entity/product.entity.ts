@@ -1,5 +1,6 @@
 import { UserEntity } from 'src/auth/models/entity/user.entity';
 import { BrandEntity } from 'src/brand/models/entity/brand.entity';
+import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import {
   BeforeUpdate,
   Column,
@@ -47,4 +48,7 @@ export class ProductEntity {
     onDelete: 'CASCADE',
   })
   brandName: BrandEntity;
+
+  @ManyToMany(() => CartEntity, (cart) => cart.products)
+  carts: CartEntity[];
 }
