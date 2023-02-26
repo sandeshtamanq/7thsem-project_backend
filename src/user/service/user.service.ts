@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/auth/models/entity/user.entity';
+import { UserInterface } from 'src/auth/models/interface/user.interface';
+import { UserRoles } from 'src/auth/models/interface/user.roles';
 import { DataSource, getManager, Repository } from 'typeorm';
 
 @Injectable()
@@ -18,6 +20,11 @@ export class UserService {
         createdAt: 'DESC',
       },
     });
+  }
+
+  changeRole(id: number, user: UserInterface) {
+    user.role = UserRoles.ADMIN;
+    return this.userRepository.update(id, user);
   }
 
   async getUserStat(): Promise<{ day: any; number_of_users: string }[]> {
