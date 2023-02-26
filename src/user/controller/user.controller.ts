@@ -20,12 +20,12 @@ import { UserService } from '../service/user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post('role/:id')
+  @Post('/role/:id')
   changeRole(
     @GetUser() user: UserInterface,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    this.userService.changeRole(id, user);
+    return this.userService.changeRole(id, user);
   }
 
   @Get()
