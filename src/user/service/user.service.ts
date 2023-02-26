@@ -22,11 +22,6 @@ export class UserService {
     });
   }
 
-  changeRole(id: number, user: UserInterface) {
-    user.role = UserRoles.ADMIN;
-    return this.userRepository.update(id, user);
-  }
-
   async getUserStat(): Promise<{ day: any; number_of_users: string }[]> {
     const userData = await this.dataSource.query(`SELECT 
       DATE_TRUNC('day', "createdAt") AS "day", 

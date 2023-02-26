@@ -20,14 +20,6 @@ import { UserService } from '../service/user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post('/role/:id')
-  changeRole(
-    @GetUser() user: UserInterface,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    return this.userService.changeRole(id, user);
-  }
 
   @Get()
   @hasRoles(UserRoles.ADMIN)
