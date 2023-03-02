@@ -3,5 +3,8 @@ import { ProductInterface } from 'src/product/models/interface/product.interface
 
 export class CartDto {
   @IsNotEmpty()
-  products: ProductInterface[];
+  productId: number;
+
+  @IsNotEmpty()
+  amount: number;
 }

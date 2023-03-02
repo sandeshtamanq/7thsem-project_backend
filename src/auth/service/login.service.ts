@@ -16,8 +16,8 @@ export class LoginService {
     return bcrypt.hash(password, 12);
   }
 
-  async verifyUser(email: string, password: string): Promise<UserInterface> {
-    const user: UserInterface = await this.userRepository.findOne({
+  async verifyUser(email: string, password: string): Promise<UserEntity> {
+    const user: UserEntity = await this.userRepository.findOne({
       where: { email },
       select: [
         'id',

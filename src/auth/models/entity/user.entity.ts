@@ -40,9 +40,9 @@ export class UserEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @OneToMany((type) => ProductEntity, (product) => product.addedBy)
+  @OneToMany(() => ProductEntity, (product) => product.addedBy)
   products: ProductEntity[];
 
-  @OneToOne(() => CartEntity, (cart) => cart.user)
-  cart: CartEntity;
+  @OneToMany(() => CartEntity, (cart) => cart.user)
+  cart: CartEntity[];
 }
