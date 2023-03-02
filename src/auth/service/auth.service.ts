@@ -5,6 +5,7 @@ import { UserEntity } from '../models/entity/user.entity';
 import { UserInterface } from '../models/interface/user.interface';
 import { LoginService } from './login.service';
 import { LoginDto } from '../models/dto/login.dto';
+import { SignUpDto } from '../models/dto/signup.dto';
 
 @Injectable()
 export class AuthService {

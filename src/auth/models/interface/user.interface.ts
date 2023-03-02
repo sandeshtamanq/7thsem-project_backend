@@ -13,5 +13,5 @@ export interface UserInterface {
   role?: UserRoles;
   createdAt?: Date;
   products?: ProductInterface[];
-  cart?: CartInterface;
+  cart?: CartInterface[];
 }

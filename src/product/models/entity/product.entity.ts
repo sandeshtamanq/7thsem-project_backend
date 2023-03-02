@@ -7,6 +7,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -41,14 +42,14 @@ export class ProductEntity {
     this.updatedAt = new Date();
   }
 
-  @ManyToOne((type) => UserEntity, (user) => user.products)
+  @ManyToOne(() => UserEntity, (user) => user.products)
   addedBy: UserEntity;
 
-  @ManyToOne((type) => BrandEntity, (brand) => brand.products, {
+  @ManyToOne(() => BrandEntity, (brand) => brand.products, {
     onDelete: 'CASCADE',
   })
   brandName: BrandEntity;
 
-  @ManyToMany(() => CartEntity, (cart) => cart.products)
+  @OneToMany(() => CartEntity, (cart) => cart.product)
   carts: CartEntity[];
 }
