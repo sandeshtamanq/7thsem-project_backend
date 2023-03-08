@@ -1,5 +1,6 @@
 import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import { ProductEntity } from 'src/product/models/entity/product.entity';
+import { SearchEntity } from 'src/search/models/entity/search.entity';
 import {
   Column,
   Entity,
@@ -45,4 +46,7 @@ export class UserEntity {
 
   @OneToMany(() => CartEntity, (cart) => cart.user)
   cart: CartEntity[];
+
+  @OneToMany(() => SearchEntity, (search) => search.user)
+  searches: SearchEntity[];
 }

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
+import { paginate } from 'nestjs-typeorm-paginate/dist/paginate';
+import { Pagination } from 'nestjs-typeorm-paginate/dist/pagination';
 import { UserEntity } from 'src/auth/models/entity/user.entity';
-import { UserInterface } from 'src/auth/models/interface/user.interface';
-import { UserRoles } from 'src/auth/models/interface/user.roles';
-import { DataSource, getManager, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -13,13 +14,8 @@ export class UserService {
     private dataSource: DataSource,
   ) {}
 
-  getAllUsers(): Promise<[UserEntity[], number]> {
-    return this.userRepository.findAndCount({
-      order: {
-        role: 'ASC',
-        createdAt: 'DESC',
-      },
-    });
+  getAllUsers(options: IPaginationOptions): Promise<Pagination<UserEntity>> {
+    return paginate<UserEntity>(this.userRepository, options);
   }
 
   async getUserStat(): Promise<{ day: any; number_of_users: string }[]> {

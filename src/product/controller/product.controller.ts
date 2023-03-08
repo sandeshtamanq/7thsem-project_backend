@@ -9,11 +9,17 @@ import {
 } from '@nestjs/common';
 import {
   Param,
+  Query,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common/decorators';
 
-import { ParseIntPipe, ValidationPipe } from '@nestjs/common/pipes';
+import {
+  DefaultValuePipe,
+  ParseIntPipe,
+  ValidationPipe,
+} from '@nestjs/common/pipes';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
@@ -24,11 +30,10 @@ import { UserRoles } from 'src/auth/models/interface/user.roles';
 import { ProductDto } from '../models/dto/product.dto';
 import { ProductEntity } from '../models/entity/product.entity';
 import { ProductService } from '../service/product.service';
-import { diskStorage } from 'multer';
-const path = require('path');
-import { v4 as uuidv4 } from 'uuid';
 import { CategoryValidationPipes } from '../pipes/category-validation.pipe';
 import { FirebaseService } from '../service/firebase.service';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { Request } from 'express';
 
 @Controller('product')
 export class ProductController {
@@ -36,29 +41,35 @@ export class ProductController {
     private productService: ProductService,
     private firebaseService: FirebaseService,
   ) {}
+
+  /**
+   *
+   * @param page
+   * @param limit
+   * @returns product lists
+   */
   @Get()
-  getAllProducts(): Promise<ProductEntity[]> {
-    return this.productService.getAllProducts();
+  getAllProducts(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    @Req() req: Request,
+  ): Promise<Pagination<ProductEntity>> {
+    return this.productService.getAllProducts({
+      page,
+      limit,
+      route: `${req.protocol}://${req.get('Host')}${req.originalUrl}`,
+    });
   }
 
-  @Post()
-  @UseInterceptors(
-    FileInterceptor(
-      'productImage',
-      // , {
-      //   storage: diskStorage({
-      //     destination: './uploads/product-images',
-      //     filename: (req, file, cb) => {
-      //       const filename: string =
-      //         path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-      //       const extension: string = path.parse(file.originalname).ext;
+  /**
+   *
+   * @Body file
+   * @Body productDto
+   * @returns adds products
+   */
 
-      //       cb(null, `${filename}${extension}`);
-      //     },
-      //   }),
-      // }
-    ),
-  )
+  @Post()
+  @UseInterceptors(FileInterceptor('productImage'))
   @UsePipes(ValidationPipe)
   @hasRoles(UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -80,5 +91,17 @@ export class ProductController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   deleteProducts(@Param('id', ParseIntPipe) id: number) {
     return this.productService.deleteProduct(id);
+  }
+
+  /**
+   *
+   * @param id
+   * @returns Single product
+   */
+  @Get(':id')
+  getSingleProduct(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ProductEntity> {
+    return this.productService.getSingleProduct(id);
   }
 }

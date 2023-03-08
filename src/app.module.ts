@@ -3,13 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './auth/models/entity/user.entity';
-import { ProductEntity } from './product/models/entity/product.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-import { CategoryModule } from './category/category.module';
 import { BrandModule } from './brand/brand.module';
 import { CartModule } from './cart/cart.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -34,9 +32,9 @@ import { CartModule } from './cart/cart.module';
     }),
     ProductModule,
     UserModule,
-    CategoryModule,
     BrandModule,
     CartModule,
+    SearchModule,
   ],
   controllers: [AppController],
 })

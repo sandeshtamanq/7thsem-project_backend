@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 import { UserInterface } from 'src/auth/models/interface/user.interface';
 import { Repository } from 'typeorm';
 import { ProductEntity } from '../models/entity/product.entity';
@@ -11,8 +16,11 @@ export class ProductService {
     @InjectRepository(ProductEntity)
     private productRepository: Repository<ProductEntity>,
   ) {}
-  getAllProducts(): Promise<ProductEntity[]> {
-    return this.productRepository.find({
+
+  getAllProducts(
+    options: IPaginationOptions,
+  ): Promise<Pagination<ProductEntity>> {
+    return paginate<ProductEntity>(this.productRepository, options, {
       relations: ['brandName'],
     });
   }
@@ -27,5 +35,12 @@ export class ProductService {
 
   deleteProduct(id: number) {
     return this.productRepository.delete(id);
+  }
+
+  getSingleProduct(id: number) {
+    return this.productRepository.findOne({
+      where: { id },
+      relations: ['brandName'],
+    });
   }
 }

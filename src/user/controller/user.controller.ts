@@ -1,36 +1,40 @@
 import {
   Controller,
+  DefaultValuePipe,
   Get,
-  Param,
   ParseIntPipe,
-  Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { UserEntity } from 'src/auth/models/entity/user.entity';
-import { UserInterface } from 'src/auth/models/interface/user.interface';
 import { UserRoles } from 'src/auth/models/interface/user.roles';
 import { UserService } from '../service/user.service';
-
-// This is test
+import { Pagination } from 'nestjs-typeorm-paginate';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-
   @Get()
   @hasRoles(UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  getAllUsers(): Promise<[UserEntity[], number]> {
-    return this.userService.getAllUsers();
+  getAllUsers(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<UserEntity>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.userService.getAllUsers({
+      page,
+      limit,
+      route: 'http://localhost:3000/api/user',
+    });
   }
 
   @Get('/status')
-  // @hasRoles(UserRoles.ADMIN)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @hasRoles(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getUserStat() {
     return this.userService.getUserStat();
   }
