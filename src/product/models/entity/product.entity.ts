@@ -5,11 +5,11 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ReviewEntity } from './review.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {
@@ -52,4 +52,10 @@ export class ProductEntity {
 
   @OneToMany(() => CartEntity, (cart) => cart.product)
   carts: CartEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.Product, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  reviews: ReviewEntity[];
 }

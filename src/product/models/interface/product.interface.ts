@@ -1,6 +1,7 @@
 import { UserInterface } from 'src/auth/models/interface/user.interface';
 import { BrandInterface } from 'src/brand/models/interface/brand.interface';
 import { CartInterface } from 'src/cart/models/interface/cart.interface';
+import { ReviewInterface } from './review.interface';
 
 export interface ProductInterface {
   id?: number;
@@ -14,4 +15,5 @@ export interface ProductInterface {
   createdAt?: Date;
   updateAt?: Date;
   carts?: CartInterface[];
+  reviews?: ReviewInterface[];
 }

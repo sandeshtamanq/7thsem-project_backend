@@ -34,12 +34,15 @@ import { CategoryValidationPipes } from '../pipes/category-validation.pipe';
 import { FirebaseService } from '../service/firebase.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Request } from 'express';
+import { ReviewService } from '../service/review.service';
+import { ReviewDto } from '../models/dto/review.dto';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private productService: ProductService,
     private firebaseService: FirebaseService,
+    private reviewService: ReviewService,
   ) {}
 
   /**
@@ -103,5 +106,11 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ProductEntity> {
     return this.productService.getSingleProduct(id);
+  }
+
+  /*Review Controllers*/
+  @Post()
+  postReview(@Body() reviewDto: ReviewDto) {
+    this.reviewService.postReview(reviewDto);
   }
 }
