@@ -40,7 +40,7 @@ export class ProductService {
   getSingleProduct(id: number) {
     return this.productRepository.findOne({
       where: { id },
-      relations: ['brandName'],
+      relations: ['brandName', 'reviews', 'reviews.user'],
     });
   }
 }

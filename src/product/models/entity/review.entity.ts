@@ -1,4 +1,5 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from 'src/auth/models/entity/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'reviews' })
@@ -6,6 +7,17 @@ export class ReviewEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.reviews)
+  @Column()
+  review: string;
+
+  @ManyToOne(() => ProductEntity, (product) => product.reviews, {
+    onDelete: 'CASCADE',
+  })
   Product: ProductEntity;
+
+  @Column()
+  productId: number;
+
+  @ManyToOne(() => UserEntity, (user) => user.reviews, { onDelete: 'CASCADE' })
+  user: UserEntity;
 }

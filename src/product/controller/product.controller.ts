@@ -36,6 +36,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Request } from 'express';
 import { ReviewService } from '../service/review.service';
 import { ReviewDto } from '../models/dto/review.dto';
+import { VerifyUserGuard } from '../guard/validate-user.guard';
 
 @Controller('product')
 export class ProductController {
@@ -109,8 +110,19 @@ export class ProductController {
   }
 
   /*Review Controllers*/
-  @Post()
-  postReview(@Body() reviewDto: ReviewDto) {
-    this.reviewService.postReview(reviewDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('review/:id')
+  postReview(
+    @Body() reviewDto: ReviewDto,
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: UserInterface,
+  ) {
+    return this.reviewService.postReview(reviewDto, id, user);
+  }
+
+  @UseGuards(JwtAuthGuard, VerifyUserGuard)
+  @Delete('review/:id')
+  deleteReview(@Param('id', ParseIntPipe) id: number) {
+    this.reviewService.deleteReview(id);
   }
 }

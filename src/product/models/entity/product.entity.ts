@@ -54,7 +54,6 @@ export class ProductEntity {
   carts: CartEntity[];
 
   @OneToMany(() => ReviewEntity, (review) => review.Product, {
-    nullable: true,
     onDelete: 'CASCADE',
   })
   reviews: ReviewEntity[];

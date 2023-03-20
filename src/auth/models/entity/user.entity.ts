@@ -1,5 +1,6 @@
 import { CartEntity } from 'src/cart/models/entity/cart.entity';
 import { ProductEntity } from 'src/product/models/entity/product.entity';
+import { ReviewEntity } from 'src/product/models/entity/review.entity';
 import { SearchEntity } from 'src/search/models/entity/search.entity';
 import {
   Column,
@@ -49,4 +50,9 @@ export class UserEntity {
 
   @OneToMany(() => SearchEntity, (search) => search.user)
   searches: SearchEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.user, {
+    onDelete: 'CASCADE',
+  })
+  reviews: ReviewEntity[];
 }
