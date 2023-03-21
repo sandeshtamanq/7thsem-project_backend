@@ -11,4 +11,4 @@ jobs:
       - name: Build the Docker image
       - run: docker build . --file Dockerfile --tag 626546715/7thsem_project_backend:$(date +%s)
       - run: echo "${{secrets.DOCKER_HUB_PASSWORD}}" | docker login -u {{secrets.DOCKER_HUB_USERNAME}} --password stdin
-      -run: Docker push 626546715/7thsem_project_backend:$(date +%s)
+      - run: Docker push 626546715/7thsem_project_backend:$(date +%s)
