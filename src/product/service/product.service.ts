@@ -37,6 +37,7 @@ export class ProductService {
     return this.productRepository.delete(id);
   }
 
+  // test
   getSingleProduct(id: number) {
     return this.productRepository.findOne({
       where: { id },
