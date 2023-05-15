@@ -59,4 +59,11 @@ export class BrandController {
   ) {
     return this.brandService.updateBrand(id, updateDto);
   }
+
+  @Get('/getAll')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @hasRoles(UserRoles.ADMIN)
+  getAllBrands() {
+    return this.brandService.getAllBrands();
+  }
 }

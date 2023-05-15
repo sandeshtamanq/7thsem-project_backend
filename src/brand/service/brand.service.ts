@@ -5,7 +5,6 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { UserEntity } from 'src/auth/models/entity/user.entity';
 import { Repository } from 'typeorm';
 import { BrandEntity } from '../models/entity/brand.entity';
 import { BrandInterface } from '../models/interface/brand.interface';
@@ -19,6 +18,10 @@ export class BrandService {
 
   getBrands(options: IPaginationOptions): Promise<Pagination<BrandInterface>> {
     return paginate<BrandEntity>(this.brandRepository, options);
+  }
+
+  getAllBrands() {
+    return this.brandRepository.createQueryBuilder('brand').getMany();
   }
 
   async addBrand(brandDto: BrandInterface): Promise<BrandInterface> {

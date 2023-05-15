@@ -17,7 +17,7 @@ import { LoginService } from './service/login.service';
     JwtModule.register({
       secret: process.env.JWTSECRET,
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: '7d',
       },
     }),
     TypeOrmModule.forFeature([UserEntity]),

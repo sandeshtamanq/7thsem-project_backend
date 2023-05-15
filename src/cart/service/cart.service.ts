@@ -16,11 +16,23 @@ export class CartService {
     private productRepository: Repository<ProductEntity>,
   ) {}
 
-  getCart(id: number) {
-    return this.cartRepository.find({
-      where: { userId: id },
-      relations: ['product'],
-    });
+  async getCart(id: number) {
+    let subTotal: number = 0;
+    const cartLists = await this.cartRepository
+      .createQueryBuilder('cart')
+      .where('cart.userId = :id', { id })
+      .leftJoinAndSelect('cart.product', 'product')
+      .leftJoinAndSelect('product.brandName', 'brand')
+      .getMany();
+    if (cartLists.length > 0) {
+      cartLists.forEach((cartItem) => {
+        subTotal = subTotal + cartItem.amount * cartItem?.product.productPrice;
+      });
+    }
+    return {
+      cartLists,
+      subTotal,
+    };
   }
 
   async addToCart(user: UserInterface, cartItem: CartInterface) {
@@ -44,5 +56,19 @@ export class CartService {
       productId: cartItem.productId,
     });
     return this.cartRepository.save(newCart);
+  }
+
+  async getCartAmount(id: number) {
+    let totalCartAmount = 0;
+    const cartAmount = await this.cartRepository
+      .createQueryBuilder('cart')
+      .select('cart.amount')
+      .where('cart.userId = :id', { id })
+      .getMany();
+
+    cartAmount.map(({ amount }) => {
+      totalCartAmount = totalCartAmount + amount;
+    });
+    return { amount: totalCartAmount };
   }
 }

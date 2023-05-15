@@ -6,7 +6,7 @@ import {
   Pagination,
 } from 'nestjs-typeorm-paginate';
 import { UserInterface } from 'src/auth/models/interface/user.interface';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Like, Repository } from 'typeorm';
 import { ProductEntity } from '../models/entity/product.entity';
 import { ProductInterface } from '../models/interface/product.interface';
 
@@ -25,6 +25,24 @@ export class ProductService {
     });
   }
 
+  filterProduct(brand: string, price: number) {
+    if (price > 0) {
+      return this.productRepository.find({
+        select: ['brandName'],
+        where: {
+          productDescription: Like(`%${brand}%`),
+          productPrice: LessThanOrEqual(price),
+        },
+      });
+    }
+    return this.productRepository.find({
+      select: ['brandName'],
+      where: {
+        productDescription: Like(`%${brand}%`),
+      },
+    });
+  }
+
   addProduct(
     user: UserInterface,
     productDto: ProductInterface,
@@ -39,9 +57,17 @@ export class ProductService {
 
   // test
   getSingleProduct(id: number) {
-    return this.productRepository.findOne({
-      where: { id },
-      relations: ['brandName', 'reviews', 'reviews.user'],
-    });
+    return this.productRepository
+      .createQueryBuilder('product')
+      .where('product.id = :id', { id })
+      .leftJoinAndSelect('product.brandName', 'brand')
+      .leftJoinAndSelect('product.reviews', 'reviews')
+      .leftJoinAndSelect('reviews.user', 'user')
+      .orderBy('reviews.createdAt', 'DESC')
+      .getOne();
+    // return this.productRepository.findOne({
+    //   where: { id },
+    //   relations: ['brandName', 'reviews', 'reviews.user'],
+    // });
   }
 }

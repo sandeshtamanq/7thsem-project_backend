@@ -11,6 +11,7 @@ import {
   Unique,
 } from 'typeorm';
 import { UserRoles } from '../interface/user.roles';
+import { OrderEntity } from 'src/order/models/entity/order.entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -55,4 +56,7 @@ export class UserEntity {
     onDelete: 'CASCADE',
   })
   reviews: ReviewEntity[];
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
+  orders: OrderEntity[];
 }

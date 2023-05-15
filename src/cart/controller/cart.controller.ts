@@ -28,4 +28,9 @@ export class CartController {
   addToCart(@GetUser() user: UserInterface, @Body() cartDto: CartDto) {
     return this.cartService.addToCart(user, cartDto);
   }
+
+  @Get("/amount")
+  getCartAmount(@GetUser() user:UserInterface){
+    return this.cartService.getCartAmount(user.id)
+  }
 }

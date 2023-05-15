@@ -8,6 +8,8 @@ import { UserModule } from './user/user.module';
 import { BrandModule } from './brand/brand.module';
 import { CartModule } from './cart/cart.module';
 import { SearchModule } from './search/search.module';
+import { OrderModule } from './order/order.module';
+import { OrderEntity } from './order/models/entity/order.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,10 @@ import { SearchModule } from './search/search.module';
           // username: process.env.DB_USER,
           // password: process.env.DB_PASSWORD,
           // database: process.env.DB_NAME,
-          // entities: [__dirname + './**/models/entity/*.entity{.ts,.js}'],
+          entities: [
+            __dirname + './**/models/entity/*.entity{.ts,.js}',
+            OrderEntity,
+          ],
           // entities: [UserEntity, ProductEntity],
           url: process.env.DATABASE_URL,
           autoLoadEntities: true,
@@ -35,6 +40,7 @@ import { SearchModule } from './search/search.module';
     BrandModule,
     CartModule,
     SearchModule,
+    OrderModule,
   ],
   controllers: [AppController],
 })

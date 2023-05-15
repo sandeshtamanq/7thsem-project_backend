@@ -13,7 +13,7 @@ export class CartEntity {
   @ManyToOne(() => ProductEntity, (product) => product.carts)
   product: ProductEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.cart)
+  @ManyToOne(() => UserEntity, (user) => user.cart, { onDelete: 'CASCADE' })
   user: UserEntity;
 
   @Column()

@@ -1,5 +1,11 @@
 import { UserEntity } from 'src/auth/models/entity/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'reviews' })
@@ -20,4 +26,7 @@ export class ReviewEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.reviews, { onDelete: 'CASCADE' })
   user: UserEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

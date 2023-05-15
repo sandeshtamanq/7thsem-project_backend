@@ -32,7 +32,6 @@ import { ProductEntity } from '../models/entity/product.entity';
 import { ProductService } from '../service/product.service';
 import { CategoryValidationPipes } from '../pipes/category-validation.pipe';
 import { FirebaseService } from '../service/firebase.service';
-import { Pagination } from 'nestjs-typeorm-paginate';
 import { Request } from 'express';
 import { ReviewService } from '../service/review.service';
 import { ReviewDto } from '../models/dto/review.dto';
@@ -46,6 +45,14 @@ export class ProductController {
     private reviewService: ReviewService,
   ) {}
 
+  @Get('filter')
+  filterPorducts(
+    @Query('price', new DefaultValuePipe(-1), ParseIntPipe) price: number,
+    @Query('brand', new DefaultValuePipe('')) brand: string,
+  ) {
+    return this.productService.filterProduct(brand, price);
+  }
+
   /**
    *
    * @param page
@@ -56,8 +63,9 @@ export class ProductController {
   getAllProducts(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+
     @Req() req: Request,
-  ): Promise<Pagination<ProductEntity>> {
+  ) {
     return this.productService.getAllProducts({
       page,
       limit,
@@ -82,6 +90,7 @@ export class ProductController {
     @GetUser() user: UserInterface,
     @Body(CategoryValidationPipes) productDto: ProductDto,
   ): Promise<ProductEntity> {
+    console.log(file);
     const imageUrl = await this.firebaseService.uploadFile(
       file,
       'product-images',
