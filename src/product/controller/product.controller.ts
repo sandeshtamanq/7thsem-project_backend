@@ -90,7 +90,6 @@ export class ProductController {
     @GetUser() user: UserInterface,
     @Body(CategoryValidationPipes) productDto: ProductDto,
   ): Promise<ProductEntity> {
-    console.log(file);
     const imageUrl = await this.firebaseService.uploadFile(
       file,
       'product-images',

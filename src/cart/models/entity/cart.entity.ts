@@ -10,7 +10,9 @@ export class CartEntity {
   @Column()
   amount: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.carts)
+  @ManyToOne(() => ProductEntity, (product) => product.carts, {
+    onDelete: 'CASCADE',
+  })
   product: ProductEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.cart, { onDelete: 'CASCADE' })

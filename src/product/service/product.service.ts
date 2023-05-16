@@ -65,9 +65,5 @@ export class ProductService {
       .leftJoinAndSelect('reviews.user', 'user')
       .orderBy('reviews.createdAt', 'DESC')
       .getOne();
-    // return this.productRepository.findOne({
-    //   where: { id },
-    //   relations: ['brandName', 'reviews', 'reviews.user'],
-    // });
   }
 }
