@@ -6,7 +6,7 @@ import {
   Pagination,
 } from 'nestjs-typeorm-paginate';
 import { UserInterface } from 'src/auth/models/interface/user.interface';
-import { LessThanOrEqual, Like, Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { ProductEntity } from '../models/entity/product.entity';
 import { ProductInterface } from '../models/interface/product.interface';
 
@@ -25,22 +25,41 @@ export class ProductService {
     });
   }
 
-  filterProduct(brand: string, price: number) {
-    if (price > 0) {
-      return this.productRepository.find({
-        select: ['brandName'],
-        where: {
-          productDescription: Like(`%${brand}%`),
-          productPrice: LessThanOrEqual(price),
-        },
-      });
+  async filterProduct(searchTerm: string, price: number) {
+    if (price > 0 && searchTerm.length > 0) {
+      const getProduct = await this.productRepository
+        .createQueryBuilder('product')
+        .leftJoin('product.brandName', 'brand')
+        .andWhere('brand.brandName ILike :searchTerm', { searchTerm })
+        .orWhere('product.productDescription ILike :searchTerm', {
+          searchTerm: `%${searchTerm}%`,
+        })
+        .orWhere('product.productName ILike :searchTerm', {
+          searchTerm: `%${searchTerm}%`,
+        })
+        .getMany();
+
+      return getProduct.filter((product) => product.productPrice <= price);
+    } else if (price > 0) {
+      console.log('here');
+      return this.productRepository
+        .createQueryBuilder('product')
+        .leftJoin('product.brandName', 'brand')
+        .where('product.productPrice <= :price', { price })
+        .getMany();
+    } else {
+      return this.productRepository
+        .createQueryBuilder('product')
+        .leftJoin('product.brandName', 'brand')
+        .where('brand.brandName ILike :searchTerm', { searchTerm })
+        .orWhere('product.productDescription ILike :searchTerm', {
+          searchTerm: `%${searchTerm}%`,
+        })
+        .orWhere('product.productName ILike :searchTerm', {
+          searchTerm: `%${searchTerm}%`,
+        })
+        .getMany();
     }
-    return this.productRepository.find({
-      select: ['brandName'],
-      where: {
-        productDescription: Like(`%${brand}%`),
-      },
-    });
   }
 
   addProduct(

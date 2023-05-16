@@ -18,10 +18,17 @@ export class OrderService {
     return this.orderRepository
       .createQueryBuilder('order')
       .leftJoin('order.user', 'user')
-      .addSelect(['user.firstName'])
+      .addSelect([
+        'user.id',
+        'user.firstName',
+        'user.lastName',
+        'user.email',
+        'user.contactNumber',
+      ])
       .leftJoin('order.products', 'product')
       .addSelect(['product.productName'])
       .limit(10)
+      .orderBy('order.createdAt', 'DESC')
       .getMany();
   }
 

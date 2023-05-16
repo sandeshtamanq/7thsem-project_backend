@@ -43,13 +43,17 @@ export class UserEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @OneToMany(() => ProductEntity, (product) => product.addedBy)
+  @OneToMany(() => ProductEntity, (product) => product.addedBy, {
+    onDelete: 'CASCADE',
+  })
   products: ProductEntity[];
 
-  @OneToMany(() => CartEntity, (cart) => cart.user)
+  @OneToMany(() => CartEntity, (cart) => cart.user, { onDelete: 'CASCADE' })
   cart: CartEntity[];
 
-  @OneToMany(() => SearchEntity, (search) => search.user)
+  @OneToMany(() => SearchEntity, (search) => search.user, {
+    onDelete: 'CASCADE',
+  })
   searches: SearchEntity[];
 
   @OneToMany(() => ReviewEntity, (review) => review.user, {
@@ -57,6 +61,6 @@ export class UserEntity {
   })
   reviews: ReviewEntity[];
 
-  @OneToMany(() => OrderEntity, (order) => order.user)
+  @OneToMany(() => OrderEntity, (order) => order.user, { onDelete: 'CASCADE' })
   orders: OrderEntity[];
 }

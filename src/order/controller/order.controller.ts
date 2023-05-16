@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { OrderService } from '../service/order.service';
 import { OrderDto } from '../models/dto/order.dto';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
@@ -26,7 +35,15 @@ export class OrderController {
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   addOrder(@Body() orderDto: OrderDto, @GetUser() user: UserInterface) {
+    if (
+      orderDto.products.length === 0 ||
+      orderDto.amount < 1 ||
+      orderDto.totalSum < 1
+    ) {
+      throw new HttpException('Please add some product', 400);
+    }
     return this.orderService.addOrder(orderDto, user.id);
   }
 }

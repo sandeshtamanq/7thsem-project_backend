@@ -41,7 +41,7 @@ export class OrderEntity {
   @Column()
   totalSum: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.orders)
+  @ManyToOne(() => UserEntity, (user) => user.orders, { onDelete: 'CASCADE' })
   user: UserEntity;
 
   @Column()

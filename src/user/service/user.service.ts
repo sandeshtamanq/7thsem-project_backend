@@ -14,7 +14,9 @@ export class UserService {
     private dataSource: DataSource,
   ) {}
 
-  getAllUsers(options: IPaginationOptions): Promise<Pagination<UserEntity>> {
+  async getAllUsers(
+    options: IPaginationOptions,
+  ): Promise<Pagination<UserEntity>> {
     return paginate<UserEntity>(this.userRepository, options);
   }
 
