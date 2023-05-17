@@ -17,6 +17,10 @@ export enum PaymentMode {
   ESEWA = 'esewa',
 }
 
+export enum DeliveryStatus {
+  DELIVERED = 'delivered',
+  PENDING = 'pending',
+}
 @Entity({ name: 'orders' })
 export class OrderEntity {
   @PrimaryGeneratedColumn()
@@ -40,6 +44,9 @@ export class OrderEntity {
 
   @Column()
   totalSum: number;
+
+  @Column({ default: DeliveryStatus.PENDING })
+  deliveryStatus: DeliveryStatus;
 
   @ManyToOne(() => UserEntity, (user) => user.orders, { onDelete: 'CASCADE' })
   user: UserEntity;

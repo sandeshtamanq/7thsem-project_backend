@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDto } from '../models/dto/order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderEntity } from '../models/entity/order.entity';
+import { DeliveryStatus, OrderEntity } from '../models/entity/order.entity';
 import { Repository } from 'typeorm';
 import { CartEntity } from 'src/cart/models/entity/cart.entity';
 
@@ -30,6 +30,7 @@ export class OrderService {
         .addSelect(['product.productName'])
         // .limit(10)
         .orderBy('order.createdAt', 'DESC')
+        .orderBy('order.deliveryStatus', 'DESC')
         .getMany()
     );
   }
@@ -39,6 +40,7 @@ export class OrderService {
       .createQueryBuilder('order')
       .where('order.userId = :id', { id })
       .leftJoinAndSelect('order.products', 'products')
+      .orderBy('order.deliveryStatus', 'DESC')
       .getMany();
   }
 
@@ -52,5 +54,11 @@ export class OrderService {
     await this.cartRepository.delete({ userId: id });
 
     return this.orderRepository.save(newOrder);
+  }
+
+  updateStatus(id: number, status: DeliveryStatus) {
+    return this.orderRepository.update(id, {
+      deliveryStatus: status,
+    });
   }
 }

@@ -3,6 +3,9 @@ import {
   Controller,
   Get,
   HttpException,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   UseGuards,
   UsePipes,
@@ -16,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { UserRoles } from 'src/auth/models/interface/user.roles';
+import { DeliveryStatus } from '../models/entity/order.entity';
 
 @Controller('order')
 @UseGuards(JwtAuthGuard)
@@ -45,5 +49,13 @@ export class OrderController {
       throw new HttpException('Please add some product', 400);
     }
     return this.orderService.addOrder(orderDto, user.id);
+  }
+
+  @Patch('delivery-status/:id')
+  updateStatus(
+    @Body('status') status: DeliveryStatus,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.orderService.updateStatus(id, status);
   }
 }

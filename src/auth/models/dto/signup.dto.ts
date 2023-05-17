@@ -24,5 +24,6 @@ export class SignUpDto {
   @IsNotEmpty()
   confirmPassword: string;
 
+  @IsNotEmpty()
   address: string;
 }
