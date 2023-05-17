@@ -12,6 +12,7 @@ import { OrderModule } from './order/order.module';
 import { OrderEntity } from './order/models/entity/order.entity';
 import { ContactModule } from './contact/contact.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ContactEntity } from './contact/models/entity/contact.entity';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
           entities: [
             __dirname + './**/models/entity/*.entity{.ts,.js}',
             OrderEntity,
+            ContactEntity,
           ],
           // entities: [UserEntity, ProductEntity],
           url: process.env.DATABASE_URL,
