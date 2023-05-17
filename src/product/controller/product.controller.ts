@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import {
   Param,
+  Patch,
+  Put,
   Query,
   Req,
   UploadedFile,
@@ -36,6 +38,7 @@ import { Request } from 'express';
 import { ReviewService } from '../service/review.service';
 import { ReviewDto } from '../models/dto/review.dto';
 import { VerifyUserGuard } from '../guard/validate-user.guard';
+import { UpdateDto } from '../models/dto/update.dto';
 
 @Controller('product')
 export class ProductController {
@@ -132,5 +135,15 @@ export class ProductController {
   @Delete('review/:id')
   deleteReview(@Param('id', ParseIntPipe) id: number) {
     this.reviewService.deleteReview(id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @hasRoles(UserRoles.ADMIN)
+  @Put('/edit/:id')
+  updateProduct(
+    @Body() updateDto: UpdateDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.productService.updateProduct(id, updateDto);
   }
 }

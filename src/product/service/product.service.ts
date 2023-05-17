@@ -9,6 +9,7 @@ import { UserInterface } from 'src/auth/models/interface/user.interface';
 import { Like, Repository } from 'typeorm';
 import { ProductEntity } from '../models/entity/product.entity';
 import { ProductInterface } from '../models/interface/product.interface';
+import { UpdateDto } from '../models/dto/update.dto';
 
 @Injectable()
 export class ProductService {
@@ -41,7 +42,6 @@ export class ProductService {
 
       return getProduct.filter((product) => product.productPrice <= price);
     } else if (price > 0) {
-      console.log('here');
       return this.productRepository
         .createQueryBuilder('product')
         .leftJoin('product.brandName', 'brand')
@@ -84,5 +84,23 @@ export class ProductService {
       .leftJoinAndSelect('reviews.user', 'user')
       .orderBy('reviews.createdAt', 'DESC')
       .getOne();
+  }
+
+  async updateProduct(id: number, updateDto: UpdateDto) {
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: {
+        reviews: false,
+      },
+    });
+    product.brandName = updateDto.brandName;
+    product.productAmount = updateDto.productAmount;
+    product.productName = updateDto.productName;
+    product.productDescription = updateDto.productDescription;
+    product.productPrice = updateDto.productPrice;
+    await this.productRepository.save(product);
+    return {
+      message: 'product updated successfully',
+    };
   }
 }

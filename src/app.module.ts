@@ -10,6 +10,8 @@ import { CartModule } from './cart/cart.module';
 import { SearchModule } from './search/search.module';
 import { OrderModule } from './order/order.module';
 import { OrderEntity } from './order/models/entity/order.entity';
+import { ContactModule } from './contact/contact.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { OrderEntity } from './order/models/entity/order.entity';
     CartModule,
     SearchModule,
     OrderModule,
+    ContactModule,
+    DashboardModule,
   ],
   controllers: [AppController],
 })

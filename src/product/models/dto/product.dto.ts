@@ -15,7 +15,6 @@ export class ProductDto {
   @IsNotEmpty()
   productAmount: number;
 
-  @IsNotEmpty()
   productImage: string;
 
   @IsNotEmpty()
