@@ -5,12 +5,15 @@ import {
   initializeFirebaseApp,
 } from './firebase/firebase.config';
 import { ValidationPipe } from '@nestjs/common';
+import { APILogger } from './@middlewares/apiLogger.middleware';
 
 initializeFirebaseApp(firebaseConfig);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+
+  app.use(APILogger);
 
   // app.useGlobalPipes(new ValidationPipe());
 
