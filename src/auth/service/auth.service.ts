@@ -6,6 +6,7 @@ import { UserInterface } from '../models/interface/user.interface';
 import { LoginService } from './login.service';
 import { LoginDto } from '../models/dto/login.dto';
 import { SignUpDto } from '../models/dto/signup.dto';
+import { MailService } from 'src/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @Inject(LoginService) private loginService: LoginService,
+    private mailService: MailService,
   ) {}
 
   /* 
@@ -37,6 +39,7 @@ export class AuthService {
     const hashedPassword = await this.loginService.hashPassword(
       signUpDto.password,
     );
+    this.mailService.welcomeMail(signUpDto.firstName, signUpDto.email);
     const newUser = this.userRepository.create({
       ...signUpDto,
       password: hashedPassword,

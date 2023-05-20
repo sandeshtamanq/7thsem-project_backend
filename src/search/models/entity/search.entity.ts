@@ -9,7 +9,7 @@ export class SearchEntity {
   @Column()
   search: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.searches)
+  @ManyToOne(() => UserEntity, (user) => user.searches, { onDelete: 'CASCADE' })
   user: UserEntity[];
 
   @Column()
