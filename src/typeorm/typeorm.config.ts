@@ -9,7 +9,7 @@ export default class TypeOrmConfig {
     return {
       type: 'postgres',
       host: process.env.HOST || 'localhost',
-      port: Number(process.env.PGPORT),
+      port: +process.env.PGPORT,
       username: process.env.PGUSERNAME,
       password: process.env.PGPASSWORD,
       database: process.env.PGDDATABASE,

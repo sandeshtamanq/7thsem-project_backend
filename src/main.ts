@@ -4,8 +4,7 @@ import {
   firebaseConfig,
   initializeFirebaseApp,
 } from './firebase/firebase.config';
-import { ValidationPipe } from '@nestjs/common';
-import { APILogger } from './@middlewares/apiLogger.middleware';
+import { APILogger } from './middlewares/apiLogger.middleware';
 
 initializeFirebaseApp(firebaseConfig);
 
