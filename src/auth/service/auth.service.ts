@@ -39,7 +39,7 @@ export class AuthService {
     const hashedPassword = await this.loginService.hashPassword(
       signUpDto.password,
     );
-    this.mailService.welcomeMail(signUpDto.firstName, signUpDto.email);
+    // this.mailService.welcomeMail(signUpDto.firstName, signUpDto.email);
     const newUser = this.userRepository.create({
       ...signUpDto,
       password: hashedPassword,
