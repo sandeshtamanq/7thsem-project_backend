@@ -48,7 +48,7 @@ export class OrderController {
     ) {
       throw new HttpException('Please add some product', 400);
     }
-    return this.orderService.addOrder(orderDto, user.id);
+    return this.orderService.addOrder(orderDto, user);
   }
 
   @Patch('delivery-status/:id')

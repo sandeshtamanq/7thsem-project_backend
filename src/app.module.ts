@@ -13,6 +13,7 @@ import { OrderEntity } from './order/models/entity/order.entity';
 import { ContactModule } from './contact/contact.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ContactEntity } from './contact/models/entity/contact.entity';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ContactEntity } from './contact/models/entity/contact.entity';
     OrderModule,
     ContactModule,
     DashboardModule,
+    PaymentModule,
   ],
   controllers: [AppController],
 })

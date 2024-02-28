@@ -1,5 +1,12 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ProductEntity } from 'src/product/models/entity/product.entity';
+import { PaymentMode } from '../entity/paymentmode.enum';
 
 export class OrderDto {
   @IsNotEmpty()
@@ -12,4 +19,16 @@ export class OrderDto {
 
   @IsNotEmpty()
   products: ProductEntity[];
+
+  @IsOptional()
+  @IsString()
+  returnUrl: string;
+
+  @IsOptional()
+  @IsString()
+  websiteUrl: string;
+
+  @IsNotEmpty()
+  @IsEnum(PaymentMode)
+  paymentMode: PaymentMode;
 }

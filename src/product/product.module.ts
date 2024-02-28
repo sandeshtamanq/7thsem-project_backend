@@ -21,5 +21,6 @@ import { ReviewService } from './service/review.service';
   ],
   controllers: [ProductController],
   providers: [ProductService, FirebaseService, ReviewService],
+  exports: [ProductService],
 })
 export class ProductModule {}

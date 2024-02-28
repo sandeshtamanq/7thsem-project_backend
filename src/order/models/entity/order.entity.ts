@@ -10,12 +10,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-export enum PaymentMode {
-  CASHONDELIVER = 'cash on delivery',
-  KHALTI = 'khalti',
-  ESEWA = 'esewa',
-}
+import { PaymentMode } from './paymentmode.enum';
 
 export enum DeliveryStatus {
   DELIVERED = 'delivered',
@@ -39,11 +34,14 @@ export class OrderEntity {
   @Column({ default: false })
   payment: boolean;
 
-  @Column({ default: PaymentMode.CASHONDELIVER })
+  @Column({ default: PaymentMode.CASHONDELIVERY })
   paymentMode: PaymentMode;
 
   @Column()
   totalSum: number;
+
+  @Column({ nullable: true })
+  pidx: string;
 
   @Column({ default: DeliveryStatus.PENDING })
   deliveryStatus: DeliveryStatus;
