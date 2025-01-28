@@ -39,6 +39,9 @@ import { ReviewService } from '../service/review.service';
 import { ReviewDto } from '../models/dto/review.dto';
 import { VerifyUserGuard } from '../guard/validate-user.guard';
 import { UpdateDto } from '../models/dto/update.dto';
+import { supabase } from '../../supabase/supabase.config';
+import uuidv4 from '../../utils/uuidv4';
+import { SupabaseService } from '../service/supabase.service';
 
 @Controller('product')
 export class ProductController {
@@ -46,6 +49,7 @@ export class ProductController {
     private productService: ProductService,
     private firebaseService: FirebaseService,
     private reviewService: ReviewService,
+    private supabaseService: SupabaseService,
   ) {}
 
   @Get('filter')
@@ -93,10 +97,16 @@ export class ProductController {
     @GetUser() user: UserInterface,
     @Body(CategoryValidationPipes) productDto: ProductDto,
   ): Promise<ProductEntity> {
-    const imageUrl = await this.firebaseService.uploadFile(
+    const imageUrl = await this.supabaseService.uploadFile(
       file,
       'product-images',
     );
+
+    console.log('imageUrl', imageUrl);
+    // const imageUrl = await this.firebaseService.uploadFile(
+    //   file,
+    //   'product-images',
+    // );
     productDto.productImage = imageUrl;
     return this.productService.addProduct(user, productDto);
   }

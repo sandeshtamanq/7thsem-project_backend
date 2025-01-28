@@ -9,6 +9,7 @@ import { ReviewEntity } from './models/entity/review.entity';
 import { FirebaseService } from './service/firebase.service';
 import { ProductService } from './service/product.service';
 import { ReviewService } from './service/review.service';
+import { SupabaseService } from './service/supabase.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -20,7 +21,7 @@ import { ReviewService } from './service/review.service';
     AuthModule,
   ],
   controllers: [ProductController],
-  providers: [ProductService, FirebaseService, ReviewService],
+  providers: [ProductService, FirebaseService, ReviewService, SupabaseService],
   exports: [ProductService],
 })
 export class ProductModule {}
